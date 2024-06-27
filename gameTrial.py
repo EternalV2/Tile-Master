@@ -9,6 +9,8 @@ from player import Player
 from moving_object import MovingObject
 from enemy import Enemy
 from userI import UserI
+from camera import Camera
+from cursor import Cursor
 
 # Initialize Pygame
 pygame.init()
@@ -20,8 +22,53 @@ pygame.display.set_caption("Procedurally Generated Landscape")
 ui = UserI(3)
 
 # Create objects
-gameMap = Map(WIDTH, HEIGHT, TILE_SIZE)
-player = Player(100, 100, 5, 35)
+gameMap = Map(TILE_SIZE, MAP_SIZE)
+
+#print(f"ASS: {len(gameMap.tiles[0])}")
+
+for j in range(len(gameMap.tiles[0])):
+    if j == 0 or j == 188: 
+        #print(j==188 and j!= 0 and j!= 1)
+        for i in range(len(gameMap.tiles)):
+            gameMap.tiles[i][j].color = [121, 201, 35]
+            gameMap.tiles[i][j].image = pygame.image.load("/Users/royhouwayek/Documents/WorkSpaces/pyTutor/game2d/img/red_1_10.png")
+    elif j % 2 == 0:
+        for i in range(len(gameMap.tiles)):
+            gameMap.tiles[i][j].color = [121, 201, 35]
+            gameMap.tiles[i][j].image = pygame.image.load("/Users/royhouwayek/Documents/WorkSpaces/pyTutor/game2d/img/green_1_10.png")
+    else:
+        for i in range(len(gameMap.tiles)):
+            gameMap.tiles[i][j].color = [193, 199, 40]
+            gameMap.tiles[i][j].image = pygame.image.load("/Users/royhouwayek/Documents/WorkSpaces/pyTutor/game2d/img/green_1_10.png")
+
+for i in range(len(gameMap.tiles)):
+    if i == 0 or i == 104:
+        #print(f"LEN: {len(gameMap.tiles)}")
+        for j in range(len(gameMap.tiles[0])):
+            gameMap.tiles[i][j].color = [121, 201, 35]
+            gameMap.tiles[i][j].image = pygame.image.load("/Users/royhouwayek/Documents/WorkSpaces/pyTutor/game2d/img/red_1_10.png")
+    elif i % 2 == 0:
+        for j in range(len(gameMap.tiles[0])):
+            gameMap.tiles[i][j].color = [193, 199, 40]
+            gameMap.tiles[i][j].image = pygame.image.load("/Users/royhouwayek/Documents/WorkSpaces/pyTutor/game2d/img/green_1_10.png")
+
+# MAKE A VERTICAL LINE OF WATER
+for i in range(len(gameMap.tiles)):
+    if i % 3 == 0:
+        gameMap.tiles[i][55].walkable = False
+        gameMap.tiles[i][55].image = pygame.image.load("/Users/royhouwayek/Documents/WorkSpaces/pyTutor/game2d/img/blue_1_10.png")
+
+gameMap.load(MAP_TXT)
+
+#35
+player = Player(SPAWN[0], SPAWN[1], 5, 20)
+cursor = Cursor(ORI_MOUSE_POS[0], ORI_MOUSE_POS[1])
+pygame.mouse.set_pos((ORI_MOUSE_POS[0], ORI_MOUSE_POS[1]))
+
+print(f"ORI POS X: {ORI_MOUSE_POS[0]}, {ORI_MOUSE_POS[1]}")
+
+camera = Camera(player)
+
 
 # Main game loop
 clock = pygame.time.Clock()
@@ -33,35 +80,16 @@ key_states = {}
 key_start_times = {}
 
 enemy_list = []
+
+# for i in range(1):
+#     enemy_list.append(Enemy((150 * i) + 1000, 150 * i + 300, TILE_SIZE, 35))
 for i in range(3):
-    enemy_list.append(Enemy((150 * i) + 1000, 150 * i + 300, TILE_SIZE, 35))
+    enemy_list.append(Enemy(28 * i + 28, 52 + (5 * i), TILE_SIZE, 35))
 
-enemy_list.append(Enemy(700,  700, TILE_SIZE, 35))
-enemy_list.append(Enemy(650,  700, TILE_SIZE, 35))
-enemy_list.append(Enemy(600,  700, TILE_SIZE, 35))
-
-
-enemy_list.append(Enemy(750,  700, TILE_SIZE, 35))
-enemy_list.append(Enemy(800,  700, TILE_SIZE, 35))
-
-enemy_list.append(Enemy(850,  700, TILE_SIZE, 35))
-
-enemy_list.append(Enemy(900,  700, TILE_SIZE, 35))
-'''
-enemy_list.append(Enemy(700,  600, TILE_SIZE, 35))
-
-enemy_list.append(Enemy(650,  600, TILE_SIZE, 35))
-enemy_list.append(Enemy(600,  600, TILE_SIZE, 35))
-
-enemy_list.append(Enemy(750,  600, TILE_SIZE, 35))
-enemy_list.append(Enemy(800,  600, TILE_SIZE, 35))
-enemy_list.append(Enemy(850,  600, TILE_SIZE, 35))
-enemy_list.append(Enemy(900,  600, TILE_SIZE, 35))
-'''
+print()
 
 while True:
-    sprite_group = pygame.sprite.Group()
-
+    camera.update(gameMap)
     keys = pygame.key.get_pressed()
 
     for event in pygame.event.get():
@@ -69,6 +97,11 @@ while True:
             pygame.quit()
             sys.exit()
 
+        elif event.type == pygame.MOUSEMOTION:
+            cursor.x, cursor.y = event.pos[0] // TILE_SIZE, event.pos[1] // TILE_SIZE
+            #print(f"CURSOR X: {cursor.x}, Y: {cursor.y}")
+
+        # BUILD KEY STATE LIST
         elif event.type == pygame.KEYDOWN:
             # Key is pressed down
             key_states[event.key] = True
@@ -85,32 +118,32 @@ while True:
     # Check for held keys and update timers
     for key, state in key_states.items():
         if state:
-
             wasdKeys(key, keys, player, gameMap)
 
             if key == pygame.K_SPACE:
-                player.build(gameMap.tiles)
+                pass
+                #player.build(gameMap.tiles)
 
             elif key == pygame.K_p:
                 player.shoot(gameMap.tiles, movingList)
 
-    sprite_group.add(player)
-
-    screen.fill((255, 255, 255))
-
     # Draw map and player
-    gameMap.draw(screen)
+    # gameMap.draw(screen)
+    camera.addE(player, screen)
+    camera.addMap(0, gameMap)
+    camera.renderMap(screen)
 
     for enemy in enemy_list:
         enemy.move(player, movingList, enemy_list, gameMap.tiles)
-        sprite_group.add(enemy)
+        print(f"ENEMY POS X: {enemy.x}, POS Y: {enemy.y}")
+        camera.addE(enemy, screen)
 
     for obj in movingList:
-        sprite_group.add(obj)
+        camera.addObj(obj, screen)
 
         brake = 0
 
-        #Attach emitter to player and Enemies
+        # Attach emitter to player and Enemies
 
         if obj.rect.colliderect(player.rect):
             if obj.team != "player":
@@ -138,35 +171,29 @@ while True:
                         enemy.emitter.x = enemy.x
                         enemy.emitter.y = enemy.y
                         enemy.emitter.emit_particles_circular(enemy.x, enemy.y, 30)
-                        #Dont double free the same object
+                        # Dont double free the same object
                         brake = 1
-                        break 
-        
+                        break
+
         if brake:
             continue
-
-        obj.emitter.update()
-        obj.emitter.draw(screen)
-
 
         if obj.move() == -1:
             curr_time = pygame.time.get_ticks()
             if curr_time > obj.delete_time:
                 movingList.remove(obj)
-                
 
-    sprite_group.update()
-    sprite_group.draw(screen)
+    camera.renderObj(screen)
     ui.heart_arr.draw(screen)
 
-    player.updateD(movingList)
-    player.emitter.update()
-    player.emitter.draw(screen)
+    player.updateD(screen, movingList)
+    #player.emitter.update([0, 0], [0, 0])
+    #player.emitter.draw(screen)
 
     for enemy in enemy_list:
         enemy.updateD(movingList)
-        enemy.emitter.update()
-        enemy.emitter.draw(screen)
+        #enemy.emitter.update()
+        #enemy.emitter.draw(screen)
 
     pygame.display.flip()
     clock.tick(60)

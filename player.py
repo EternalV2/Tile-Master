@@ -4,14 +4,16 @@ from global_functions import *
 from mapy import Map
 from moving_object import MovingObject
 from particle_emitter import Particle, ParticleEmitter
+from camera import Camera 
+from obj import Obj
 
-class Player(pygame.sprite.Sprite):
+class Player(Obj):
     def __init__(self, x, y, size, playerFPS):
-        super().__init__()
-        self.x = x
-        self.y = y
-        self.size = size
-        self.last_direction = "u"
+
+        img = "/Users/royhouwayek/Documents/WorkSpaces/pyTutor/game2d/img/hat/hat_u.png"
+        anim_stack = []        
+
+        super().__init__(x, y, size, "u", playerFPS, playerFPS * 1.35, img, anim_stack)
 
         self.health = 3
         self.next_hit = 1
@@ -20,30 +22,13 @@ class Player(pygame.sprite.Sprite):
         self.next_wood = 1
         self.wood_cooldown = 500
 
-
-        # ANIMATION TIMING ___________________________________________________________________________________________________________
-        self.next_frame_time = 1
-        self.playerFPS = playerFPS * 1.35
-
         self.next_fireball = 1
         self.fireball_cooldown = playerFPS * 6
 
-        self.next_animation = 1
-        self.animation_time = playerFPS
-        # ANIMATION TIMING ___________________________________________________________________________________________________________
-
-        self.image = pygame.image.load("img/hat/hat_u.png")
-        self.rect = self.image.get_rect()
-        self.rect.center = [self.x, self.y]
-
-        self.animStack = []
         self.inMotion = 0
 
-        self.degrees = getDeg(self.last_direction)
-
-        self.emitter = ParticleEmitter(x, y, 10)
-
-    def updateD(self, moving_list):
+    # I THINK updateD HANDLES TE ANIMATION STACK
+    def updateD(self, screen, moving_list):
 
         # CHECK TIME ______________________________________________________________________________________________________________
         time_delta = checkTime(self.next_animation, self.animation_time)
@@ -53,24 +38,24 @@ class Player(pygame.sprite.Sprite):
             self.next_animation = time_delta
         # ________________________________________________________________________________________________________________________
 
-        player_row = self.x // TILE_SIZE
-        player_col = self.y // TILE_SIZE
-
+        player_row = self.x
+        player_col = self.y
+        
         # IDLE ____________________________________________________________________________________________________________________
-        if not self.animStack:
-            if len(self.last_direction) == 2:
-                self.image = pygame.transform.rotate(pygame.image.load("img/hat/hat_ru.png"), self.degrees+45)
+        if not self.anim_stack:
+            if len(self.direction) == 2:
+                self.image = pygame.transform.rotate(pygame.image.load("/Users/royhouwayek/Documents/WorkSpaces/pyTutor/game2d/img/hat/hat_ru.png"), self.degrees+45)
             else:
-                self.image = pygame.transform.rotate(pygame.image.load("img/hat/hat_u.png"), self.degrees)
+                self.image = pygame.transform.rotate(pygame.image.load("/Users/royhouwayek/Documents/WorkSpaces/pyTutor/game2d/img/hat/hat_u.png"), self.degrees)
             self.inMotion = 0
         # _________________________________________________________________________________________________________________________
 
         # CAST FIREBALL ___________________________________________________________________________________________________________
         else:
-            if len(self.last_direction) == 2:
-                self.image = pygame.transform.rotate(pygame.image.load(self.animStack.pop()), self.degrees+45)
+            if len(self.direction) == 2:
+                self.image = pygame.transform.rotate(pygame.image.load(self.anim_stack.pop()), self.degrees+45)
             else:
-                self.image = pygame.transform.rotate(pygame.image.load(self.animStack.pop()), self.degrees)
+                self.image = pygame.transform.rotate(pygame.image.load(self.anim_stack.pop()), self.degrees)
 
             self.inMotion = 1
         # _________________________________________________________________________________________________________________________
@@ -79,39 +64,42 @@ class Player(pygame.sprite.Sprite):
         new_x = self.x + dx
         new_y = self.y + dy
 
-        # Update last_direction based on movement
+        # Update direction based on movement
         if dx < 0 and dy < 0:
-            self.last_direction = 'lu'
+            self.direction = 'lu'
         elif dx < 0 and dy > 0:
-            self.last_direction = 'ld'
+            self.direction = 'ld'
         elif dx > 0 and dy < 0:
-            self.last_direction = 'ru'
+            self.direction = 'ru'
         elif dx > 0 and dy > 0:
-            self.last_direction = 'rd'
+            self.direction = 'rd'
         elif dx > 0:
-            self.last_direction = 'r'
+            self.direction = 'r'
         elif dx < 0:
-            self.last_direction = 'l'
+            self.direction = 'l'
         elif dy > 0:
-            self.last_direction = 'd'
+            self.direction = 'd'
         elif dy < 0:
-            self.last_direction = 'u'
+            self.direction = 'u'
 
-        self.degrees = getDeg(self.last_direction)
+        self.degrees = getDeg(self.direction)
 
-        time_delta = checkTime(self.next_frame_time, self.playerFPS)
+        time_delta = checkTime(self.next_frame, self.frame_time)
         if time_delta == -1:
             return
         else:
-            self.next_frame_time = time_delta
+            self.next_frame = time_delta
 
-        allow = inMap(self.x, self.y, self.last_direction, self.size)
+        #print(f"self.x {self.x} self.y {self.y}")
         
-        if allow and map_tiles[new_y // TILE_SIZE][new_x // TILE_SIZE].color != [58, 124, 242]:
+        allow = inMap(self.x, self.y, self.direction, self.size)
+        #print("MOVE???? ", allow)
+        
+        if allow and map_tiles[new_y][new_x].walkable:
             self.x = new_x
             self.y = new_y
-            self.rect.center = [self.x, self.y]
 
+    # DISABLED BUILDING
     def build(self, map_tiles):
 
         time_delta = checkTime(self.next_wood, self.wood_cooldown)
@@ -121,36 +109,36 @@ class Player(pygame.sprite.Sprite):
             self.next_wood = time_delta
 
         # Get the current position of the player
-        player_row = self.x // TILE_SIZE
-        player_col = self.y // TILE_SIZE
+        player_row = self.x
+        player_col = self.y
 
-        inBounds = inMap(self.x, self.y, self.last_direction, self.size)
+        inBounds = inMap(self.x, self.y, self.direction, self.size)
 
         # Check the last direction and create a brown tile in that direction
         # DIAGONLS
-        if self.last_direction == 'lu' and inBounds and map_tiles[player_col - 1][player_row - 1].color == [58, 124, 242]:
+        if self.direction == 'lu' and inBounds and map_tiles[player_col - 1][player_row - 1].color == [58, 124, 242]:
             map_tiles[player_col - 1][player_row - 1] = Tile((player_row - 1) * TILE_SIZE, (player_col - 1) * TILE_SIZE, TILE_SIZE, [172, 86, 29])
 
-        elif self.last_direction == 'ld' and inBounds and map_tiles[player_col + 1][player_row - 1].color == [58, 124, 242]:
+        elif self.direction == 'ld' and inBounds and map_tiles[player_col + 1][player_row - 1].color == [58, 124, 242]:
             map_tiles[player_col + 1][player_row - 1] = Tile((player_row - 1) * TILE_SIZE, (player_col + 1) * TILE_SIZE, TILE_SIZE, [172, 86, 29])
 
-        elif self.last_direction == 'rd' and inBounds and map_tiles[player_col + 1][player_row + 1].color == [58, 124, 242]:
+        elif self.direction == 'rd' and inBounds and map_tiles[player_col + 1][player_row + 1].color == [58, 124, 242]:
             map_tiles[player_col + 1][player_row + 1] = Tile((player_row + 1) * TILE_SIZE, (player_col + 1) * TILE_SIZE, TILE_SIZE, [172, 86, 29])
 
-        elif self.last_direction == 'ru' and inBounds and map_tiles[player_col - 1][player_row + 1].color == [58, 124, 242]:
+        elif self.direction == 'ru' and inBounds and map_tiles[player_col - 1][player_row + 1].color == [58, 124, 242]:
             map_tiles[player_col - 1][player_row + 1] = Tile((player_row + 1) * TILE_SIZE, (player_col - 1) * TILE_SIZE, TILE_SIZE, [172, 86, 29])
 
         # CARDINALS
-        elif self.last_direction == 'r' and inBounds and map_tiles[player_col][player_row + 1].color == [58, 124, 242]:
+        elif self.direction == 'r' and inBounds and map_tiles[player_col][player_row + 1].color == [58, 124, 242]:
             map_tiles[player_col][player_row + 1] = Tile((player_row + 1) * TILE_SIZE, player_col * TILE_SIZE, TILE_SIZE, [172, 86, 29])
 
-        elif self.last_direction == 'l' and inBounds and map_tiles[player_col][player_row - 1].color == [58, 124, 242]:
+        elif self.direction == 'l' and inBounds and map_tiles[player_col][player_row - 1].color == [58, 124, 242]:
             map_tiles[player_col][player_row - 1] = Tile((player_row - 1) * TILE_SIZE, player_col * TILE_SIZE, TILE_SIZE, [172, 86, 29])
 
-        elif self.last_direction == 'd' and inBounds and map_tiles[player_col + 1][player_row].color == [58, 124, 242]:
+        elif self.direction == 'd' and inBounds and map_tiles[player_col + 1][player_row].color == [58, 124, 242]:
             map_tiles[player_col + 1][player_row] = Tile(player_row * TILE_SIZE, (player_col + 1) * TILE_SIZE, TILE_SIZE, [172, 86, 29])
 
-        elif self.last_direction == 'u' and inBounds and map_tiles[player_col - 1][player_row].color == [58, 124, 242]:
+        elif self.direction == 'u' and inBounds and map_tiles[player_col - 1][player_row].color == [58, 124, 242]:
             map_tiles[player_col - 1][player_row] = Tile(player_row * TILE_SIZE, (player_col - 1) * TILE_SIZE, TILE_SIZE, [172, 86, 29])
 
     def shoot(self, map_tiles, moving_list):
@@ -164,42 +152,46 @@ class Player(pygame.sprite.Sprite):
         else:
             self.next_fireball = time_delta
         
-        player_row = self.x // TILE_SIZE
-        player_col = self.y // TILE_SIZE
+        player_row = self.x
+        player_col = self.y
 
-        inBounds = inMap(self.x, self.y, self.last_direction, self.size)
+        inBounds = inMap(self.x, self.y, self.direction, self.size)
         
-        if len(self.last_direction) == 2:
-            self.animStack.append("img/hat/hat_ru_cast3.png")
-            self.animStack.append("img/hat/hat_ru_cast2.png")
-            self.animStack.append("img/hat/hat_ru_cast1.png")
+        # FIREBALL CASTING ANIMATION
+        # DIAGNOL CASTING
+        if len(self.direction) == 2:
+            self.anim_stack.append("/Users/royhouwayek/Documents/WorkSpaces/pyTutor/game2d/img/hat/hat_ru_cast3.png")
+            self.anim_stack.append("/Users/royhouwayek/Documents/WorkSpaces/pyTutor/game2d/img/hat/hat_ru_cast2.png")
+            self.anim_stack.append("/Users/royhouwayek/Documents/WorkSpaces/pyTutor/game2d/img/hat/hat_ru_cast1.png")
+        
+        # CARDINAL CASTING
         else:            
-            self.animStack.append("img/hat/hat_up_cast3.png")
-            self.animStack.append("img/hat/hat_up_cast2.png")
-            self.animStack.append("img/hat/hat_up_cast1.png")
+            self.anim_stack.append("/Users/royhouwayek/Documents/WorkSpaces/pyTutor/game2d/img/hat/hat_up_cast3.png")
+            self.anim_stack.append("/Users/royhouwayek/Documents/WorkSpaces/pyTutor/game2d/img/hat/hat_up_cast2.png")
+            self.anim_stack.append("/Users/royhouwayek/Documents/WorkSpaces/pyTutor/game2d/img/hat/hat_up_cast1.png")
 
         # DIAGNOLS
-        if self.last_direction == 'lu' and inBounds:
-            moving_list.append(MovingObject((player_row - 3) * TILE_SIZE, (player_col - 3) * TILE_SIZE, TILE_SIZE, [255, 0, 0], "lu", "player"))
+        if self.direction == 'lu' and inBounds:
+            moving_list.append(MovingObject((player_row - 3), (player_col - 3), TILE_SIZE, [255, 0, 0], "lu", "player"))
 
-        elif self.last_direction == 'ld' and inBounds:
-            moving_list.append(MovingObject((player_row - 3) * TILE_SIZE, (player_col + 3) * TILE_SIZE, TILE_SIZE, [255, 0, 0], "ld", "player"))
+        elif self.direction == 'ld' and inBounds:
+            moving_list.append(MovingObject((player_row - 3), (player_col + 3), TILE_SIZE, [255, 0, 0], "ld", "player"))
 
-        elif self.last_direction == 'rd' and inBounds:
-            moving_list.append(MovingObject((player_row + 3) * TILE_SIZE, (player_col + 3) * TILE_SIZE, TILE_SIZE, [255, 0, 0], "rd", "player"))
+        elif self.direction == 'rd' and inBounds:
+            moving_list.append(MovingObject((player_row + 3), (player_col + 3), TILE_SIZE, [255, 0, 0], "rd", "player"))
 
-        elif self.last_direction == 'ru' and inBounds:
-            moving_list.append(MovingObject((player_row + 3) * TILE_SIZE, (player_col - 3) * TILE_SIZE, TILE_SIZE, [255, 0, 0], "ru", "player"))
+        elif self.direction == 'ru' and inBounds:
+            moving_list.append(MovingObject((player_row + 3), (player_col - 3), TILE_SIZE, [255, 0, 0], "ru", "player"))
 
         # CARDINALS
-        elif self.last_direction == 'r' and inBounds:
-            moving_list.append(MovingObject((player_row + 4) * TILE_SIZE, player_col * TILE_SIZE, TILE_SIZE, [255, 0, 0], "r", "player"))
+        elif self.direction == 'r' and inBounds:
+            moving_list.append(MovingObject((player_row + 4), player_col, TILE_SIZE, [255, 0, 0], "r", "player"))
 
-        elif self.last_direction == 'l' and inBounds:
-            moving_list.append(MovingObject((player_row - 4) * TILE_SIZE, player_col * TILE_SIZE, TILE_SIZE, [255, 0, 0], "l", "player"))
+        elif self.direction == 'l' and inBounds:
+            moving_list.append(MovingObject((player_row - 4), player_col, TILE_SIZE, [255, 0, 0], "l", "player"))
 
-        elif self.last_direction == 'd' and inBounds:
-            moving_list.append(MovingObject((player_row) * TILE_SIZE, (player_col + 4) * TILE_SIZE, TILE_SIZE, [255, 0, 0], "d", "player"))
+        elif self.direction == 'd' and inBounds:
+            moving_list.append(MovingObject((player_row), (player_col + 4), TILE_SIZE, [255, 0, 0], "d", "player"))
 
-        elif self.last_direction == 'u' and inBounds:
-            moving_list.append(MovingObject((player_row) * TILE_SIZE, (player_col - 4) * TILE_SIZE, TILE_SIZE, [255, 0, 0], "u", "player"))
+        elif self.direction == 'u' and inBounds:
+            moving_list.append(MovingObject((player_row), (player_col - 4), TILE_SIZE, [255, 0, 0], "u", "player"))

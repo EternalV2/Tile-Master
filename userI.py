@@ -4,7 +4,7 @@ class UserI(pygame.sprite.Sprite):
     def __init__(self, health):
         super().__init__()
         self.heart_arr = pygame.sprite.Group()
-        self.heart = pygame.image.load("img/heart.png")
+        self.heart = pygame.image.load("/Users/royhouwayek/Documents/WorkSpaces/pyTutor/game2d/img/heart.png")
         self.heart = pygame.transform.scale(self.heart, (self.heart.get_width()*1.5, self.heart.get_height()*1.5))
 
         # Create hearts according to the initial health
