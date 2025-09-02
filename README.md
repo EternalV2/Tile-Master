@@ -28,6 +28,7 @@ We have developed a demo in order to showcase the capabilities and limitations o
 
 ## The Level Editor Implementation
 <img width="1348" height="748" alt="image" src="https://github.com/user-attachments/assets/0588977d-1b1f-410d-a15a-868553b05342" />
+
 *User Interface of The Level Editor*
 
 The first program we will look at is level_editor.py. 
