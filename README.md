@@ -25,3 +25,8 @@ This will start the game preview and allow you to play through the current level
 
 ## Demo
 We have developed a demo in order to showcase the capabilities and limitations of the Tile Master Game Engine and to provide examples, allowing new users to learn how the engine operates and how it can be used. The demo is based on the plot of The Lord Of The Rings, providing a humorous and interesting example of how Tile Master can bring J.R.R. Tolkien's classic world to life. The current game_demo.py file is configured to play the volcano level, but it is trivial to start a new project entirely from scratch (follow the instructions outlined in the Getting Started section). We shall also be using the Lord of the Rings demo to create a tutorial. 
+
+## The Level Editor Implementation
+<img width="1348" height="748" alt="image" src="https://github.com/user-attachments/assets/0588977d-1b1f-410d-a15a-868553b05342" />
+*User Interface of The Level Editor*
+The first program we will look at is level_editor.py 
