@@ -21,4 +21,4 @@ To run game_demo.py:
 cd src 
 python game_demo.py
 </pre>
-This will start the game up the Level Editor and direct it to start designing maps and assets in that folder. 
+This will start the game preview and allow you to play through the current level. 
