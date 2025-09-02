@@ -31,4 +31,4 @@ We have developed a demo in order to showcase the capabilities and limitations o
 
 *User Interface of The Level Editor*
 
-The first program we will look at is level_editor.py. 
+The first program we will look at is level_editor.py. The level editor allows users to animate the levels using square tiles with dimensions of 10 by 10 pixels, 16 by 16 pixels, or 32 by 32 pixels.
