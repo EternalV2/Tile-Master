@@ -10,8 +10,9 @@ Tile Master is a custom 2D game engine built from scratch using the Pygame Libra
 ## Getting Started
 Tile Master consists of 2 standalone programs: the level_editor.py, which is a GUI Program that allows the user to create the levels (it handles the sound system, the  tile pixel editor, frame-by-frame animation, and the level design), and game_demo.py, which handles the internal logic of the game (graphics rendering, user input, memory access, pathfinding, user interface, etc.) and initializes the base game object classes which the user can then inherit to build custom classes (such as the playable character class, the non-playable character class (NPC), the projectile class, the object class, the weapon class, etc.).
 
-To get started with the level editor run:
+To get started with the level editor, make a new directory in the levels folder and then run :
 <pre>
 cd src 
-python level_editor.py
+python level_editor.py {nmae of current level folder}
 </pre>
+This will open up the level_editor 
