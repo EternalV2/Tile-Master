@@ -1,5 +1,5 @@
 # Tile Master
-<img width="1018" height="1014" alt="image" src="https://github.com/user-attachments/assets/0fa2f360-46b6-48c6-9c0b-20b20b7c55bb" />
+<img width="500" height="500" alt="image" src="https://github.com/user-attachments/assets/0fa2f360-46b6-48c6-9c0b-20b20b7c55bb" />
 
 
 ## Overview
