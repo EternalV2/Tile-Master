@@ -1,5 +1,5 @@
 # Tile Master
-<img width="990" height="536" alt="image" src="https://github.com/user-attachments/assets/e9b05174-c1c2-4c4a-9f09-6e0f57f73472" />
+<img width="500" height="271" alt="image" src="https://github.com/user-attachments/assets/e9b05174-c1c2-4c4a-9f09-6e0f57f73472" />
 
 ## Overview
 Tile Master is a custom 2D game engine built from scratch using the Pygame Library, meant for the simple and rapid development of top-down, 2D games by individuals with minimal software development experience. The engine is composed of a level editor, pixel editor, animation software, a built-in pathfinding AI system, camera system, audio system, particle renderer system, collision detection, sprite manager system, and a customizable user interface. The goal is to allow users to make fun and aesthetic games quickly, without the loss of functionality. 
