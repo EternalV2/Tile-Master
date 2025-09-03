@@ -1,5 +1,5 @@
 # Tile Master
-<img width="513" height="507" alt="Screen Shot 2025-09-03 at 8 51 26 PM" src="https://github.com/user-attachments/assets/fec6c6e9-f194-4c57-bd70-dccc90c924db" />
+<img width="1018" height="1014" alt="image" src="https://github.com/user-attachments/assets/0fa2f360-46b6-48c6-9c0b-20b20b7c55bb" />
 
 
 ## Overview
