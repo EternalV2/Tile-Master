@@ -30,10 +30,14 @@ We have developed a demo in order to showcase the capabilities and limitations o
 ## The Level Editor Implementation
 <img width="1348" height="748" alt="image" src="https://github.com/user-attachments/assets/0588977d-1b1f-410d-a15a-868553b05342" />
 
-*User Interface of The Level Editor*
+*User Interface of The Level Editor, designing a game level*
 
 The first program we will look at is level_editor.py. The level editor allows users to animate the levels using square tiles with dimensions of 10 by 10 pixels, 16 by 16 pixels, or 32 by 32 pixels. These tiles can be created using the Tile Drawer program, which can be opened up through the Level Editor program by clicking the first button. The Tile Drawer program allows you to set certain attributes, other than pixel color, such as whether the player can walk on them or whether they should have a transparent background.
 <img width="1631" height="986" alt="image" src="https://github.com/user-attachments/assets/d22c42b6-d60a-43a6-901c-0c328f7cc479" />
 
-*User Interface of The Level Editor designing a grass tile*
+*User Interface of The Tile Drawer, designing a grass tile*
 
+The tile images will be saved in a directory named "_10/" for 10 by 10 pixel tiles, "_16"  for 16 by 16 pixel tiles, and "_32" for 32 by 32 pixel tiles. The tile attributes will be stored in a file called tile_log.txt placed in the current working directory. After designing the tiles and setting its attributes, the user can then draw out the desired map. After a base map has been designed, the user can then add new frames and start the process of animating the map. Using the level editor tool, the user is able to add effects on top of the map, shuffle in between frames, and play the full animation. Finally, the user can add music to the level after they are finished designing. The completed map is then stored in a .txt file which game_demo.py can decode. The complete controls for the Level Editor Tool are shown below:
+
+<img width="411" height="612" alt="image" src="https://github.com/user-attachments/assets/e5d3440f-f6ab-4fe8-98ab-e249989ea972" />
+*Controls for The Tile Editor*
