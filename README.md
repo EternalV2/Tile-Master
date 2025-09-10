@@ -29,7 +29,7 @@ We have developed a demo in order to showcase the capabilities and limitations o
 
 https://github.com/user-attachments/assets/9feef8f2-9a2f-498a-a454-7ad89487cfb2
 
-*The Eruption of Mount Doom Level*
+*The Eruption of Mount Doom*
 
 ## The Level Editor Implementation
 <img width="1348" height="748" alt="image" src="https://github.com/user-attachments/assets/0588977d-1b1f-410d-a15a-868553b05342" />
