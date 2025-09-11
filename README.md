@@ -31,7 +31,9 @@ https://github.com/user-attachments/assets/9feef8f2-9a2f-498a-a454-7ad89487cfb2
 
 *Frodo, Sam, and Gollum Witness the Eruption of Mount Doom*
 
+https://github.com/user-attachments/assets/7b269479-9afb-410a-8996-367d0ff99190
 
+*Game Play of Gandalf Fighting a Dragon in a Cavern*
 
 ## The Level Editor Implementation
 <img width="1348" height="748" alt="image" src="https://github.com/user-attachments/assets/0588977d-1b1f-410d-a15a-868553b05342" />
@@ -42,10 +44,6 @@ The first program we will look at is level_editor.py. The level editor allows us
 <img width="1631" height="986" alt="image" src="https://github.com/user-attachments/assets/d22c42b6-d60a-43a6-901c-0c328f7cc479" />
 
 *User Interface of The Tile Drawer, designing a grass tile*
-
-
-https://github.com/user-attachments/assets/7b269479-9afb-410a-8996-367d0ff99190
-
 
 The tile images will be saved in a directory named "_10/" for 10 by 10 pixel tiles, "_16"  for 16 by 16 pixel tiles, and "_32" for 32 by 32 pixel tiles. The tile attributes will be stored in a file called tile_log.txt placed in the current working directory. After designing the tiles and setting its attributes, the user can then draw out the desired map. After a base map has been designed, the user can then add new frames and start the process of animating the map. Using the level editor tool, the user is able to add effects on top of the map, shuffle in between frames, and play the full animation. Finally, the user can add music to the level after they are finished designing. The completed map is then stored in a .txt file which game_demo.py can decode. The complete controls for the Level Editor Tool are shown below:
 
