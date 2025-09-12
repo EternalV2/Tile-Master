@@ -91,3 +91,11 @@ The game engine handles characters in a structured way. Characters are initializ
 |  |_______________etc...
 </pre>
 *All the sprites for a particular character are stored in a folder named after the character. Then inside that folder, you have the folders that hold the sprite for particular actions the characters can take (for example, attack, walk, dance, etc.). Inside each action's folder, you have 4 folders named "u", "d", "ld", and "rd" symbolizing the directions "up", "down", "left-down", and "right-down" respectively. This extreme level of precision and structure in the directory allows game designers to offload the work of managing the various paths of the sprites to the game engine, allowing them to simply type the name of the character and have the game engine load the images flawlessly and without hassle*
+
+### NPC System
+The NPC system animates the character sprites in a few ways, most notably, the NPC system implements a pathfinding algorithm. More specifically, the NPC computes a vector based on where the player is relative to the NPC's position, normalizes that into a direction, and then adjusts its position by snapping to adjacent grid tiles, checking that it takes a valid path and that it does not collide with any other objects in the process. If the normalized vector is mostly horizontal, the NPC will move horizontally, and if it is mostly vertical, the NPC will move vertically. If it is approximately equal parts both, the NPC will move diagonally. To ensure that the NPCs do not all follow the same path towards the player and avoid clustering, the pathfinding algorithm also computes a separation vector, which is a normalized sum of vectors between the current NPC and nearby NPCs that pushes the current NPC away from nearby NPCs with a set amount of force. If the NPC is an enemy of the player, and it is within a certain distance, it will begin to attack. Apart from the pathfinding AI, the rest of the NPC system is geared to manage the sprites, timing, animation, and game logic of the NPC.
+
+<pre>
+Npc({x position}, {y position}, TILE_SIZE, {team}, {name}, {attack_moves}, {.2}, {idle animation}, {character FPS})
+</pre>
+*NPC initialization*
