@@ -47,7 +47,7 @@ https://github.com/user-attachments/assets/7b269479-9afb-410a-8996-367d0ff99190
 *Game Play of Gandalf Fighting a Dragon in a Cavern*
 
 ## The Level Editor Implementation
-<img width="1348" height="748" alt="image" src="https://github.com/user-attachments/assets/0588977d-1b1f-410d-a15a-868553b05342" />
+<img width="540" height="300" alt="image" src="https://github.com/user-attachments/assets/0588977d-1b1f-410d-a15a-868553b05342" />
 
 *User Interface of The Level Editor, designing a game level*
 
