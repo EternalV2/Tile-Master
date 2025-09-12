@@ -1,0 +1,11 @@
+16 px tiles
+MAP_SIZE = (1888, 1024)
+
+#SPAWN = (100, 90)
+#SPAWN = (50, 50)
+
+ambience = Ambience(x_range=((WIDTH * 1.05) // TILE_SIZE, (WIDTH * 1.8) // TILE_SIZE), y_range=(-100, (HEIGHT * 1.1) // TILE_SIZE), intensity_range=(18, 22), width_range=(300, 400), height_range=(100, 200))
+ambience.add_clouds(20)
+
+ambience.update()
+ambience.render()
