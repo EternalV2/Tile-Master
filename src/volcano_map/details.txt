@@ -1,0 +1,12 @@
+SPAWN = (8, 53)
+
+#enemy_list.append(Npc(0, 58, TILE_SIZE, "player", "gollum", .75, 35))
+#enemy_list.append(Npc(4, 53, TILE_SIZE, "player", "sam", .55, 35))
+player = Player(SPAWN[0], SPAWN[1], 5, "frodo", .5, 20)
+
+MAP_SIZE = (2800, 2000)
+
+events = [[0, 2], [3, 3], [4, 4], [5, 5], [6, 6], [7,7], [8, 8]]
+transit_frames = [3, 4, 5, 6, 7]
+events_times = [1000, 1000, 1000, 300, 300, 300, 500, 500, 500]
+BACKGROUND_COLOR = (138,129,104)
