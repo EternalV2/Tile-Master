@@ -99,3 +99,5 @@ The NPC system animates the character sprites in a few ways, most notably, the N
 Npc({x position}, {y position}, TILE_SIZE, {team}, {name}, {attack_moves}, {.2}, {idle animation}, {character FPS})
 </pre>
 *NPC initialization*
+
+## 
