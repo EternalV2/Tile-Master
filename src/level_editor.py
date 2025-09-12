@@ -1,5 +1,3 @@
-# IMPORTANT NOTE, WE USE BOTH IMAGE NAME AND THE REGULAR IMAGE BECAUSE IMAGE NAME IS EASILY SAVED IN AND READ FROM A FILE. 
-
 import pygame
 import sys
 
@@ -20,8 +18,6 @@ pygame.display.set_caption("Procedurally Generated Landscape")
 
 
 num_map_txts = len(glob.glob(MAP_TXT.format('*')))
-
-#print(f"NUM: {num_map_txts}")
 
 # CHECK IF ANY MAP FILES EXIST ALREADY
 if num_map_txts == 0:
@@ -49,10 +45,6 @@ else:
         frame_list.append(Map(TILE_SIZE, MAP_SIZE))
         frame_list[i].load(MAP_TXT.format(i))
         #print(f"WHAT DO YOU WANT TO BE? {len(frame_list[i].effects)}")
-
-#print("Entering Sort Effects In Level Editor")
-#frame_list[0].sortEffects()
-
 
 # NOTE HAVE A CURRENT EFFECTS VAR?
 curr_map = frame_list[current_frame]
@@ -129,33 +121,7 @@ next_frame_time = pygame.time.get_ticks() + 500
 
 
 
-'''
-tracemalloc.start()
-poll_mem_time = pygame.time.get_ticks() + 5000
-global_mem_time_tracker = 0
-'''
-
-print(f"Height: {HEIGHT}")
-
-
 while True: 
-
-    # POLL MEM EVERY SECOND
-    # _________________________________________________________________________________________________________________________
-    '''
-    curr_time = pygame.time.get_ticks()
-    if poll_mem_time - curr_time < 0:
-        global_mem_time_tracker += 1
-        print()
-        print(f"Mem Poll Number {global_mem_time_tracker}")
-        snapshot = tracemalloc.take_snapshot()
-        stats = snapshot.statistics('lineno')
-        print("Top 10 memory usage lines:")
-        for stat in stats[:10]:
-            print(stat)
-        poll_mem_time = curr_time + 5000
-    '''
-    # _________________________________________________________________________________________________________________________
 
     # CYCLE THROUGH FRAME_LIST EVERY 500 MS
     # _________________________________________________________________________________________________________________________
@@ -234,8 +200,6 @@ while True:
                 else:
                     brush.draw(undo_stack, curr_map.tiles, sidebar.draw_effects)
 
-                #print("gameMap 0 0: ", gameMap.tiles[0][0].name)
-
     # KEYS 
     # _________________________________________________________________________________________________________________________
         elif event.type == pygame.KEYDOWN:
@@ -269,36 +233,25 @@ while True:
             if event.key == pygame.K_MINUS:
                 leftbar.visible = not leftbar.visible
 
-            # TODO FIX THIS SHIT. ITS SO ASS IT HURTS
+
             # HANDLES REDO AND UNDO
             # _________________________________________________________________________________________________________________________
             if event.key == pygame.K_z:
                 if len(undo_stack) == 0: 
                     pass
-                    #print("Nothing to undo")
+                
                 else:
-                    #print("Undid")
-                    '''
-                    new_version = undo_stack.pop()
-
-                    # REDO CODE FOR WHEN YOU UNDO
-                    # _________________________________________________________________________________________________________________________
-                    redo_version_name_arr, redo_version_img_arr = copyRect(new_version.x, new_version.y, new_version.brush_size, curr_map)
-                    redo_version = UndoFrame(new_version.x, new_version.y, new_version.brush_size, redo_version_img_arr, redo_version_name_arr)
-                    redo_stack.append(redo_version)
-                    # _________________________________________________________________________________________________________________________
-                    drawRectArr(new_version.x, new_version.y, new_version.brush_size, new_version.img_arr, new_version.name_arr, curr_map)
-                    '''
+                    print("Undid")
 
             if event.key == pygame.K_y:
                 if len(redo_stack) == 0: 
                     pass
-                    #print("Nothing to redo")
+                    print("Nothing to redo")
+                
                 else:
                     #print("redid")
 
                     new_version = redo_stack.pop()
-
                     # UNDO CODE FOR WHEN YOU REDO
                     # _________________________________________________________________________________________________________________________
                     undo_version_name_arr, undo_version_img_arr = copyRect(new_version.x, new_version.y, new_version.brush_size, curr_map)
@@ -342,52 +295,9 @@ while True:
     #_________________________________________________________________________________________________________________________
     # The BRUSH IS A PARAMETER HERE BECAUSE THIS FUNCTION DRAWS WHERE THE CURSOR IS CURRENTLY AT AND SO IT USES THE BRUSH SIZE TO DRAW IT CORRECTLY
 
-    #startTrackMalloc()
-
-    #gc.set_debug(gc.DEBUG_UNCOLLECTABLE)
-    '''
-    s_1 = tracemalloc.take_snapshot()
-    
-    print()
-    print("JOE START")
-    '''
     camera.addMap(curr_map, brush.size)
 
     camera.renderMap(curr_map, screen, brush.size)
-    '''
-    s_2 = tracemalloc.take_snapshot()
-
-    top_stats = s_2.compare_to(s_1, 'lineno')
-
-    print("lookup")
-    for stat in top_stats[:10]:
-        print("s: ", stat)
-    print("done")
-    '''
-    """
-    gc.collect()
-
-    print("Top 10 memory allocations:\n")
-    
-    print("dope:", gc.garbage)
-
-    for obj in gc.garbage:
-        print(f"Uncollectable object: {obj}")
-        print(f"Type: {type(obj)}")
-        print(f"Refs: {gc.get_referrers(obj)}")
-        print(f"Attributes: {obj.__dict__ if hasattr(obj, '__dict__') else 'No __dict__'}")
-
-    print()
-
-    #print("Collected objects:", gc.garbage)
-
-    gc.set_debug(0)
-
-    print("JOE OVER")
-    print()
-    """
-
-    #endTrackMalloc()
 
     if sidebar.visible:
         sidebar.show(screen)
@@ -396,10 +306,7 @@ while True:
             sidebar.text_group.update()
             sidebar.text_group.draw(screen)
 
-
-
     if leftbar.visible:
-        #print("INNNN")
         leftbar.show(screen)
 
     camera.renderObj(screen)
