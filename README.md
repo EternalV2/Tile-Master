@@ -6,7 +6,7 @@
 Tile Master is a custom 2D game engine built from scratch using the Pygame Library, meant for the simple and rapid development of top-down, 2D games by individuals with minimal software development experience. Unlike a typical game project, Tile Master was designed as a full development platform — complete with its own level editor, pixel editor, animation toolset, and game runtime engine. The engine is composed of a level editor, pixel editor, animation software, a built-in pathfinding AI system, camera system, audio system, particle renderer system, collision detection, sprite manager system, and a customizable user interface. The goal is to allow users to make fun and aesthetic games quickly, without the loss of functionality. 
 
 ## Highlights
-- Input & Collision: Custom collision detection and input handling for player & NPC interactions.
+- Input & Collision Detection System: Custom collision detection and input handling for player & NPC interactions.
 - Particle System: Configurable particle emitters with randomized trajectories.
 - Audio System: Integrated sound and music playback.
 - Sprite/Animation Manager: Hierarchical asset management for characters (by action and direction).
@@ -14,7 +14,7 @@ Tile Master is a custom 2D game engine built from scratch using the Pygame Libra
 - Rendering System: Camera with zoom, boundary snapping, and layered sprite rendering.
 - Level Editor: GUI Program for designing tile-based maps, animations, and integrating audio.
 - Tile & Pixel Editor: Built-in sprite drawing tool with metadata and memory access.
-- Animation Tool: Frame-by-frame sprite animation system for characters and environments.
+- Animation Support: Frame-by-frame sprite animation system for characters and environments.
 
 ## Getting Started
 Tile Master consists of 2 standalone programs: the level_editor.py, which is a GUI Program that allows the user to create the levels (it handles the sound system, the  tile pixel editor, frame-by-frame animation, and the level design), and game_demo.py, which handles the internal logic of the game (graphics rendering, user input, memory access, pathfinding, user interface, etc.) and initializes the base game object classes which the user can then inherit to build custom classes (such as the playable character class, the non-playable character class (NPC), the projectile class, the object class, the weapon class, etc.).
