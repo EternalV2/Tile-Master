@@ -52,7 +52,7 @@ https://github.com/user-attachments/assets/7b269479-9afb-410a-8996-367d0ff99190
 *User Interface of The Level Editor, designing a game level*
 
 The first program we will look at is level_editor.py. The level editor allows users to animate the levels using square tiles with dimensions of 10 by 10 pixels, 16 by 16 pixels, or 32 by 32 pixels. These tiles can be created using the Tile Drawer program, which can be opened up through the Level Editor program by clicking the first button. The Tile Drawer program allows you to set certain attributes, other than pixel color, such as whether the player can walk on them or whether they should have a transparent background.
-<img width="827" height="500" alt="image" src="https://github.com/user-attachments/assets/d22c42b6-d60a-43a6-901c-0c328f7cc479" />
+<img width="409" height="611" alt="image" src="https://github.com/user-attachments/assets/d22c42b6-d60a-43a6-901c-0c328f7cc479" />
 
 *User Interface of The Tile Drawer, designing a grass tile*
 
