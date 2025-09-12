@@ -71,4 +71,23 @@ camera = Camera(player, TILE_SIZE)
 *Visual diagram of how the camera renders the screen (gray rectangle) and follows a central object (gold) depending on the object's proximity to the sides of the map (black outline). The green area in the center of the map is the region where the camera will lock onto the object and keep it in the center of the screen. If the object moves into the dark blue region, the camera will follow the object as it moves vertically, but will not move horizontally to avoid rendering a portion of the screen off the map. Likewise, if the object moves into the light blue region, the camera will follow the object horizontally but will not move vertically. If the object moves into either of the 4 corners, the camera will snap to the center of the corners and stay there until the object has left the corners. The red lines represent the boundaries of the regions where the camera will change its current movement*
 
 ### Characters 
-The game engine handles characters in a rigid 
+The game engine handles characters in a structured way. Characters are initialized with a variety of attributes, including name, size, and speed. The character sprites are stored following a particular hierarchy illustrated below:
+<pre>
+{character_name}
+|_______________{action 1}
+|  |_______________u
+|  |  |________________0.png
+|  |  |________________1.png
+|  |_______________d
+|  |  |________________0.png
+|  |  |________________1.png
+|  |_______________ld
+|  |  |________________0.png
+|  |  |________________1.png
+|  |_______________rd
+|  |  |________________0.png
+|  |  |________________1.png
+|_______________{action 2}
+|  |_______________etc...
+</pre>
+*All the sprites for a particular character are stored in a folder named after the character. Then inside that folder, you have the folders that hold the sprite for particular actions the characters can take (for example, attack, walk, dance, etc.). Inside each action's folder, you have 4 folders named "u", "d", "ld", and "rd" symbolizing the directions "up", "down", "left-down", and "right-down" respectively. This extreme level of precision and structure in the directory allows game designers to offload the work of managing the various paths of the sprites to the game engine, allowing them to simply type the name of the character and have the game engine load the images flawlessly and without hassle*
